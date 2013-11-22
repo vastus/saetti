@@ -35,8 +35,13 @@ if ('development' == app.get('env')) {
 io.sockets.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	
-	socket.on("message",function(data){
-		socket.broadcast("message",data);
+	socket.on("message", function (msg){
+        var data = {
+            message: msg
+        };
+
+        console.log(data)
+		socket.broadcast.emit("message", {message: msg});
 	});
 });
 

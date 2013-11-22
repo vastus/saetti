@@ -3,6 +3,11 @@ socket.on('news', function (data) {
     console.log(data);
     socket.emit('my other event', { my: 'data' });
 });
+
+socket.on('message', function (data) {
+    console.log(data);
+});
+
 $(window).ready(function(){
 	$("#msgbox").keypress(function(e){
 		if(e.keyCode == '13'){
