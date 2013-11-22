@@ -34,10 +34,13 @@ ul{
   background: #999;
 }
 
-.viesti .username {
-  padding-right: 1em;
+.viesti .username{
+  padding-right: 0.5em;
 }
 
+.timestamp{
+  padding-right: 0.5em;
+}
 .viesti .username:before {
   content: "<";
 }
