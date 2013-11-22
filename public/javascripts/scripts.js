@@ -19,5 +19,7 @@ $(window).ready(function(){
 		chatModel.messages.push(data);
 		console.log(chatModel.messages.length);
 	});
+
+	
 });
 

@@ -8,8 +8,8 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-
 var app = express();
+
 var server = app.listen(3000);
 var io = require('socket.io').listen(server);
 
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
+app.use(express.bodyParser());
 app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,6 +45,11 @@ io.sockets.on('connection', function (socket) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.post('/username',function(req,res){
+	if(!req.session.username){
+		req.session.username = req.body.username;
+	}
+});
 
 //http.createServer(app).listen(app.get('port'), function(){
 //  console.log('Express server listening on port ' + app.get('port'));
