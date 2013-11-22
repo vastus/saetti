@@ -33,15 +33,12 @@ if ('development' == app.get('env')) {
 }
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', { message: 'welcome' });
+	socket.emit('message', { text: 'welcome' });
 	
 	socket.on("message", function (msg){
-        var data = {
-            message: msg
-        };
-
-        console.log(data)
-		io.sockets.emit("message", {message: msg});
+      
+        console.log(msg);
+		io.sockets.emit("message", msg.text);
 	});
 });
 
