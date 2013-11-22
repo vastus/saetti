@@ -4,32 +4,26 @@ $(window).ready(function(){
 	};
 	
 	ko.applyBindings(chatModel);
-	$("#msgbox").keypress(function(e){
-		if(e.keyCode == '13'){
-			socket.emit("message",{"text": $(this).val()});
-			$(this).val("");
+
+	$('#msgbox').keypress(function (e) {
+		if (e.keyCode == '13') {
+			socket.emit('message', {'text': $(this).val()});
+			$(this).val('');
 		}
 	});
 
-	$("#loginbox").keypress(function(e){
-		if(e.keyCode == '13'){
-			socket.emit("username",{"username": $(this).val()});
+	$('#loginbox').keypress(function (e) {
+		if (e.keyCode == '13'){
+			socket.emit('username', {'username': $(this).val()});
 			$(this).hide();
-			$("#msgbox").show();
-			
+			$('#msgbox').show();
 		}
 	});
-
-
 
 	socket = io.connect('http://localhost');
-	
 	socket.on('message', function (data) {
 		console.log(data);
 		chatModel.messages.push(data);
-		
 	});
-
-	
 });
 
