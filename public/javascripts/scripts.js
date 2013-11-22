@@ -6,7 +6,7 @@ $(window).ready(function(){
 	ko.applyBindings(chatModel);
 	$("#msgbox").keypress(function(e){
 		if(e.keyCode == '13'){
-			socket.emit("message",{text: $(this).val()});
+			socket.emit("message",{"text": $(this).val()});
 			$(this).val("");
 		}
 	});
