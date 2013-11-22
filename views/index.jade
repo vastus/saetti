@@ -4,10 +4,10 @@ block content
   p Welcome to #{title}
 
   #ikkuna
-    #viestit
-      div(id="#viest132" class="viesti") Taa on viesti
+    div(id="viestit" data-bind="foreach:messages")
+    div(id="#viest132" data-bind="text:message" class="viesti") Taa on viesti
     #userit
       ul
         li juhoh
-    .cleafix a
+    .clearfix 
     input(type="text" id="msgbox")

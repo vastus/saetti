@@ -33,7 +33,7 @@ if ('development' == app.get('env')) {
 }
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('news', { hello: 'world' });
+	socket.emit('message', { message: 'welcome' });
 	
 	socket.on("message", function (msg){
         var data = {
@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
         };
 
         console.log(data)
-		socket.broadcast.emit("message", {message: msg});
+		io.sockets.emit("message", {message: msg});
 	});
 });
 
