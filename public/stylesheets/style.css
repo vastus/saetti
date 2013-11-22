@@ -23,13 +23,13 @@ a {
 }
 
 #ikkuna #viestit {
-  width: 85%;
+  width: 80%;
   float: left;
   background: #999;
 }
 
 #ikkuna #userit {
-  width: 15%;
+  width: 20%;
   float: left;
   background: #444;
 }
