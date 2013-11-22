@@ -34,23 +34,22 @@ if ('development' == app.get('env')) {
 }
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', { text: 'welcome' });
+	socket.emit('message', { username:"server",text: 'welcome' });
 	
 	socket.on("message", function (msg){
  		console.log(msg);
+		//if username is set
       	socket.get("username",function(err,name){
 			if(name){
-				io.sockets.emit("message", {"text" : msg.text});
+				io.sockets.emit("message", {"username" : name, "text" : msg.text});
 			}
 		});
-       
-		
-		
+       	
 	});
 
 	socket.on("username",function(data){
 		socket.set("username",data.username);
-	}
+	});	
 });
 
 app.get('/', routes.index);

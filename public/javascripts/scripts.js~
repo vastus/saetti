@@ -11,13 +11,25 @@ $(window).ready(function(){
 		}
 	});
 
+	$("#loginbox").keypress(function(e){
+		if(e.keyCode == '13'){
+			socket.emit("username",{"username": $(this).val()});
+			$(this).hide();
+			$("#msgbox").show();
+			
+		}
+	});
+
+
 
 	socket = io.connect('http://localhost');
-
+	
 	socket.on('message', function (data) {
 		console.log(data);
 		chatModel.messages.push(data);
 		console.log(chatModel.messages.length);
 	});
+
+	
 });
 
