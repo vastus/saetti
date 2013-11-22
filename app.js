@@ -37,19 +37,24 @@ io.sockets.on('connection', function (socket) {
 	socket.emit('message', { text: 'welcome' });
 	
 	socket.on("message", function (msg){
-      
-        console.log(msg);
-		io.sockets.emit("message", {"text" : msg.text});
+ 		console.log(msg);
+      	socket.get("username",function(err,name){
+			if(name){
+				io.sockets.emit("message", {"text" : msg.text});
+			}
+		});
+       
+		
+		
 	});
+
+	socket.on("username",function(data){
+		socket.set("username",data.username);
+	}
 });
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.post('/username',function(req,res){
-	if(!req.session.username){
-		req.session.username = req.body.username;
-	}
-});
 
 //http.createServer(app).listen(app.get('port'), function(){
 //  console.log('Express server listening on port ' + app.get('port'));
