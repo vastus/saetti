@@ -34,6 +34,18 @@ ul{
   background: #999;
 }
 
+.viesti .username {
+  padding-right: 1em;
+}
+
+.viesti .username:before {
+  content: "<";
+}
+
+.viesti .username:after {
+  content: ">";
+}
+
 #ikkuna #userit {
   width: 20%;
   float: left;

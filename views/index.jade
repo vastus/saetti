@@ -5,11 +5,12 @@ block content
 
   #ikkuna
     div(id="viestit" data-bind="foreach:messages")
-      span(data-bind="text:username")
-      div(id="#viest132" data-bind="text:text" class="viesti")
+      .viesti
+        span(id="viesti-username" data-bind="text:username" class="username") 
+        span(id="#viest132" data-bind="text:text" class="viesti-text")
     #userit
       ul
         li juhoh
     .clearfix 
-    input(type="text" id="loginbox" value="Write username")
-    input(type="text" id="msgbox")
+    input(type="text" id="loginbox" placeholder="Your username")
+    input(type="text" id="msgbox" placeholder="Message")
