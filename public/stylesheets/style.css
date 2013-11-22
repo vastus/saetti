@@ -1,4 +1,12 @@
+/* ghetto reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
+  width: 60em;
+  margin: 0 auto;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -6,3 +14,29 @@ body {
 a {
   color: #00B7FF;
 }
+
+#ikkuna {
+  width: 90%
+  margin: 0 auto;
+  padding: 1em;
+  border: 1px solid #c0c0c0;
+}
+
+#ikkuna #viestit {
+  width: 85%;
+  float: left;
+  background: #999;
+}
+
+#ikkuna #userit {
+  width: 15%;
+  float: left;
+  background: #444;
+}
+
+.clearfix {
+  clear: both;
+  height: 1px;
+  width: 1px;
+}
+
