@@ -31,7 +31,7 @@ var users = [];
 
 io.sockets.on('connection', function (socket) {
 	socket.emit('message', { username:'server',text: 'welcome', timestamp : getTimestamp() });
-	
+
 	socket.on('message', function (msg){
  		console.log(msg);
 		//if username is set
@@ -60,6 +60,8 @@ io.sockets.on('connection', function (socket) {
         socket.get('username', function (err, username) {
             var idx = users.indexOf(username);
             users.pop(idx);
+            io.sockets.emit('message', { username:'server',text: idx+' has left', timestamp : getTimestamp() });
+      
             io.sockets.emit('update user list', users);
         });
     });
