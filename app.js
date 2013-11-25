@@ -49,11 +49,14 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('update user list', users);
 	});	
 
-    // Poista useri listasta
+    // Poista useri listasta tää ei toimi koska data on undefined
+    // socket.on('disconnect', function (data) {
+    //     var idx = users.indexOf(data.username);
+    //     users.pop(idx);
+    //     io.sockets.emit('update user list', users);
+    // });
     socket.on('disconnect', function (data) {
-        var idx = users.indexOf(data.username);
-        users.pop(idx);
-        io.sockets.emit('update user list', users);
+        console.log('disconnected. data: ' + data);
     });
 });
 
