@@ -1,6 +1,7 @@
 $(window).ready(function(){
 	var chatModel = {
-		messages : ko.observableArray()
+		messages : ko.observableArray(),
+        onlineUsers : ko.observableArray()
 	};
 	
 	ko.applyBindings(chatModel);
@@ -31,11 +32,7 @@ $(window).ready(function(){
     // });
 
     socket.on('update user list', function (users) {
-        $('#user ul').html('');
-        var len = users.length;
-        for (var i = 0; i < len; i++) {
-            $('#userit ul').append('<li>' + users[i] + '</li>');
-        }
+        chatModel.onlineUsers(users);
     });
 });
 
