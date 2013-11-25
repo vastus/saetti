@@ -4,13 +4,13 @@ block content
   p Welcome to #{title}
 
   #ikkuna
-    div(id="viestit" data-bind="foreach:messages")
+    #viestit(data-bind="foreach:messages")
       .viesti
         span(id="viesti-username" data-bind="text:username" class="username") 
-        span(id="#viest132" data-bind="text:text" class="viesti-text")
+        span(id="#viest132" data-bind="text:text" class="text")
     #userit
       ul
-        li juhoh
     .clearfix 
     input(type="text" id="loginbox" placeholder="Your username")
     input(type="text" id="msgbox" placeholder="Message")
+

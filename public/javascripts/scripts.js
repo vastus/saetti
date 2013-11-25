@@ -25,5 +25,9 @@ $(window).ready(function(){
 		console.log(data);
 		chatModel.messages.push(data);
 	});
+
+    socket.on('new connection', function (user) {
+        $('#userit ul').append('<li>' + user.username + '</li>');
+    }
 });
 
