@@ -55,8 +55,13 @@ io.sockets.on('connection', function (socket) {
     //     users.pop(idx);
     //     io.sockets.emit('update user list', users);
     // });
-    socket.on('disconnect', function (data) {
-        console.log('disconnected. data: ' + data);
+    
+    socket.on('disconnect', function () {
+        socket.get('username', function (err, username) {
+            var idx = users.indexOf(username);
+            users.pop(idx);
+            io.sockets.emit('update user list', users);
+        });
     });
 });
 
@@ -67,6 +72,4 @@ var getTimestamp = function(){
 	var today = new Date();
 	return today.getHours()+":"+today.getMinutes();
 }
-//http.createServer(app).listen(app.get('port'), function(){
-//  console.log('Express server listening on port ' + app.get('port'));
-//});
+
