@@ -6,6 +6,7 @@ block content
   #ikkuna
     #viestit(data-bind="foreach:messages")
       .viesti
+        span(id="viesti-timestamp" data-bind="text:timestamp" class="timestamp")
         span(id="viesti-username" data-bind="text:username" class="username") 
         span(id="#viest132" data-bind="text:text" class="text")
     #userit

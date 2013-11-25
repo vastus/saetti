@@ -28,14 +28,14 @@ if ('development' == app.get('env')) {
 }
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', { username: 'server', text: 'welcome' });
+	socket.emit('message', { username:'server',text: 'welcome', timestamp : getTimestamp() });
 	
 	socket.on('message', function (msg){
  		console.log(msg);
 		//if username is set
       	socket.get('username', function (err, name) {
 			if (name) {
-				io.sockets.emit('message', {'username' : name, 'text' : msg.text});
+				io.sockets.emit('message', {'username' : name, 'text' : msg.text, timestamp : getTimestamp()});
 			}
 		});
 	});
@@ -49,6 +49,10 @@ io.sockets.on('connection', function (socket) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 
+var getTimestamp = function(){
+	var today = new Date();
+	return today.getHours()+":"+today.getMinutes();
+}
 //http.createServer(app).listen(app.get('port'), function(){
 //  console.log('Express server listening on port ' + app.get('port'));
 //});
