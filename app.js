@@ -27,6 +27,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+var users = [];
+
 io.sockets.on('connection', function (socket) {
 	socket.emit('message', { username:'server',text: 'welcome', timestamp : getTimestamp() });
 	
@@ -43,10 +45,16 @@ io.sockets.on('connection', function (socket) {
 	socket.on('username', function (data) {
         io.sockets.emit('new connection', {'username': data.username});
 		socket.set('username', data.username);
+        socket.set('users', users.push(data.username));
+        io.sockets.emit('update user list', users);
 	});	
 
-    // Poista useri #userit listasta
-    // socket.on('disconnect', ...);
+    // Poista useri listasta
+    socket.on('disconnect', function (data) {
+        var idx = users.indexOf(data.username);
+        users.pop(idx);
+        io.sockets.emit('update user list', users);
+    });
 });
 
 app.get('/', routes.index);
