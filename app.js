@@ -44,6 +44,9 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('new connection', {'username': data.username});
 		socket.set('username', data.username);
 	});	
+
+    // Poista useri #userit listasta
+    // socket.on('disconnect', ...);
 });
 
 app.get('/', routes.index);
