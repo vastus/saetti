@@ -28,6 +28,6 @@ $(window).ready(function(){
 
     socket.on('new connection', function (user) {
         $('#userit ul').append('<li>' + user.username + '</li>');
-    }
+    });
 });
 
