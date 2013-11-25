@@ -1,4 +1,6 @@
 $(window).ready(function(){
+	var socket = io.connect('http://localhost');
+
 	var chatModel = {
 		messages : ko.observableArray(),
         onlineUsers : ko.observableArray()
@@ -21,15 +23,10 @@ $(window).ready(function(){
 		}
 	});
 
-	socket = io.connect('http://localhost');
 	socket.on('message', function (data) {
 		console.log(data);
 		chatModel.messages.push(data);
 	});
-
-    // socket.on('new connection', function (user) {
-    //     $('#userit ul').append('<li>' + user.username + '</li>');
-    // });
 
     socket.on('update user list', function (users) {
         chatModel.onlineUsers(users);
