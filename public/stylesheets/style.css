@@ -15,23 +15,45 @@ a {
   color: #00B7FF;
 }
 
-ul{
-	list-style-type: none;
+ul {
+	list-style: none;
 }
-#msgbox{
+
+#msgbox,
+#loginbox {
+  width: 59.3em;
+  border: 1px solid #777;
+  padding: .2em;
+  font-size: 1em;
+  font-family: monospace;
+}
+
+#msgbox {
   display:none;
 }
+
 #ikkuna {
   width: 90%
   margin: 0 auto;
-  padding: 1em;
   border: 1px solid #c0c0c0;
 }
 
+#ikkuna #viestit,
+#ikkuna #userit {
+  font-size: 1em;
+  min-height: 15em;
+}
+
 #ikkuna #viestit {
-  width: 80%;
+  width: 78%;
   float: left;
-  background: #999;
+  border-right: 1px solid #666;
+}
+
+#ikkuna #userit {
+  width: 20%;
+  float: left;
+  padding-left: .5em;
 }
 
 .viesti .username{
@@ -47,12 +69,6 @@ ul{
 
 .viesti .username:after {
   content: ">";
-}
-
-#ikkuna #userit {
-  width: 20%;
-  float: left;
-  background: #444;
 }
 
 .clearfix {
