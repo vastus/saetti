@@ -19,7 +19,7 @@ $(window).ready(function(){
 		if (e.keyCode == '13' && !nameset){
 			socket.emit('username', {'username': $(this).val()});
 			$(this).hide();
-			$('#msgbox').show();
+			$('#msgbox').show().focus();
             nameset = true;
 		}
 	});
