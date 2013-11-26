@@ -2,3 +2,11 @@
 
 For the shits and giggles
 
+##todo
+
+###pienet:
+- serverin lähettämille viesteille hilightiväri
+- usernamelle samankaltanen validateAndSendi kun messageillemissä tsekataan pituus ja uniikkius
+
+###isommat
+- kannut pls
