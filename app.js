@@ -28,33 +28,44 @@ if ('development' == app.get('env')) {
 }
 
 var users = [];
-function validMsg(msg){
-    return (msg.text != undefined && msg.text.length>0 || msg.text.length<1000);
+function validateAndSendMsg(socket,msg){
+    socket.get('username', function(err,username){
+        if(err){
+            sendError(socket,'You must set username first');
+        }else if(msg.text.length<1){
+            sendError(socket,'You can\'t send empty message');
+        }else if(msg.text.length>500){
+            sendError(socket,'Too long message'); 
+        }else{
+            socket.emit('message',{username:username, text: msg.text, timestamp: getTimestamp()}); 
+        }
+    });
 }
-function saettiSays(text) {
+
+function sendError(socket,error){
+    saettiSays(error,socket);
+}
+
+function saettiSays(text,socket) {
     var obi = {
         username: 'Saetti',
         text: text,
         timestamp: getTimestamp()
     };
-
-    io.sockets.emit('message', obi);
+    if(socket==null){
+        io.sockets.emit('message', obi);
+    }else{
+        socket.emit('message',obi);
+    
+    }
 }
 
 io.sockets.on('connection', function (socket) {
 	socket.emit('message', {username: 'Saetti',text: 'Welcome to Saetti', timestamp: getTimestamp()});
 
 	socket.on('message', function (msg){
- 	    console.log(msg);
-       
-       if(!validMsg(msg)) return;
-       
-        // if username is set
-      	socket.get('username', function (err, name) {
-			if (name) {
-				io.sockets.emit('message', {'username': name, 'text': msg.text, timestamp: getTimestamp()});
-			}
-		});
+        console.log(msg);
+        validateAndSendMsg(socket,msg);
 	});
 
 	socket.on('username', function (data) {

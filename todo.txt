@@ -1,0 +1,7 @@
+pieniä:
+    - usernamelle samanlainen validateAndSend mikä kattoo onks pituuden ja uniikkiuden
+    - serverin viesteihin hilight
+
+isompia:
+    - kanavat
+

@@ -2,7 +2,7 @@ $(window).ready(function(){
 	var socket = io.connect('http://localhost');
     var nameset = false;
 	var chatModel = {
-		messages : ko.observableArray(),
+        messages : ko.observableArray(),
         onlineUsers : ko.observableArray()
 	};
 	
@@ -33,5 +33,6 @@ $(window).ready(function(){
     socket.on('update user list', function (users) {
         chatModel.onlineUsers(users);
     });
+
 });
 
