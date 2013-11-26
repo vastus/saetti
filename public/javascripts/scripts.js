@@ -1,6 +1,6 @@
 $(window).ready(function(){
 	var socket = io.connect('http://localhost');
-
+    var nameset = false;
 	var chatModel = {
 		messages : ko.observableArray(),
         onlineUsers : ko.observableArray()
@@ -16,16 +16,18 @@ $(window).ready(function(){
 	});
 
 	$('#loginbox').keypress(function (e) {
-		if (e.keyCode == '13'){
+		if (e.keyCode == '13' && !nameset){
 			socket.emit('username', {'username': $(this).val()});
 			$(this).hide();
 			$('#msgbox').show();
+            nameset = true;
 		}
 	});
 
 	socket.on('message', function (data) {
 		console.log(data);
 		chatModel.messages.push(data);
+        $("#viestit").animate({ scrollTop: $('#viestit')[0].scrollHeight}, 500);
 	});
 
     socket.on('update user list', function (users) {

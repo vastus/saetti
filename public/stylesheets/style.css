@@ -42,6 +42,8 @@ ul {
 #ikkuna #userit {
   font-size: 1em;
   min-height: 15em;
+  max-height: 15em;
+  overflow-y: auto;
 }
 
 #ikkuna #viestit {
