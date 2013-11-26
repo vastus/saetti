@@ -19,13 +19,26 @@ ul {
 	list-style: none;
 }
 
+header {
+  margin-bottom: .2em;
+}
+
+header h1 {
+  color: #555;
+  font-size: 2.5em;
+  font-weight: 200;
+  /* font-style: italic; */
+  font-family: georgia, serif;
+}
+
 #msgbox,
 #loginbox {
+  color: #444;
   width: 59.3em;
-  border: 1px solid #777;
   padding: .2em;
   font-size: 1em;
   font-family: monospace;
+  border: 1px solid #999;
 }
 
 #msgbox {
@@ -35,21 +48,22 @@ ul {
 #ikkuna {
   width: 90%
   margin: 0 auto;
-  border: 1px solid #c0c0c0;
+  border: 1px solid #bbb;
 }
 
 #ikkuna #viestit,
 #ikkuna #userit {
+  color: #555;
   font-size: 1em;
-  min-height: 15em;
-  max-height: 15em;
+  min-height: 25em;
+  max-height: 25em;
   overflow-y: auto;
 }
 
 #ikkuna #viestit {
   width: 78%;
   float: left;
-  border-right: 1px solid #666;
+  border-right: 1px solid #bbb;
 }
 
 #ikkuna #userit {
@@ -58,13 +72,14 @@ ul {
   padding-left: .5em;
 }
 
-.viesti .username{
+.viesti .username {
   padding-right: 0.5em;
 }
 
-.timestamp{
+.timestamp {
   padding-right: 0.5em;
 }
+
 .viesti .username:before {
   content: "<";
 }
