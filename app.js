@@ -28,7 +28,9 @@ if ('development' == app.get('env')) {
 }
 
 var users = [];
-
+function validMsg(msg){
+    return (msg.text != undefined && msg.text.length>0 || msg.text.length<1000);
+}
 function saettiSays(text) {
     var obi = {
         username: 'Saetti',
@@ -43,8 +45,11 @@ io.sockets.on('connection', function (socket) {
 	socket.emit('message', {username: 'Saetti',text: 'Welcome to Saetti', timestamp: getTimestamp()});
 
 	socket.on('message', function (msg){
- 		console.log(msg);
-		// if username is set
+ 	    console.log(msg);
+       
+       if(!validMsg(msg)) return;
+       
+        // if username is set
       	socket.get('username', function (err, name) {
 			if (name) {
 				io.sockets.emit('message', {'username': name, 'text': msg.text, timestamp: getTimestamp()});
