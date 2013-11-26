@@ -29,15 +29,25 @@ if ('development' == app.get('env')) {
 
 var users = [];
 
+function saettiSays(text) {
+    var obi = {
+        username: 'Saetti',
+        text: text,
+        timestamp: getTimestamp()
+    };
+
+    io.sockets.emit('message', obi);
+}
+
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', { username:'server',text: 'welcome', timestamp : getTimestamp() });
+	socket.emit('message', {username: 'Saetti',text: 'Welcome to Saetti', timestamp: getTimestamp()});
 
 	socket.on('message', function (msg){
  		console.log(msg);
-		//if username is set
+		// if username is set
       	socket.get('username', function (err, name) {
 			if (name) {
-				io.sockets.emit('message', {'username' : name, 'text' : msg.text, timestamp : getTimestamp()});
+				io.sockets.emit('message', {'username': name, 'text': msg.text, timestamp: getTimestamp()});
 			}
 		});
 	});
@@ -48,20 +58,12 @@ io.sockets.on('connection', function (socket) {
         socket.set('users', users.push(data.username));
         io.sockets.emit('update user list', users);
 	});	
-
-    // Poista useri listasta tää ei toimi koska data on undefined
-    // socket.on('disconnect', function (data) {
-    //     var idx = users.indexOf(data.username);
-    //     users.pop(idx);
-    //     io.sockets.emit('update user list', users);
-    // });
     
     socket.on('disconnect', function () {
         socket.get('username', function (err, username) {
-            var idx = users.indexOf(username);
-            users.pop(idx);
-            io.sockets.emit('message', { username:'server',text: idx+' has left', timestamp : getTimestamp() });
-      
+            if (err) console.log(err); // logataan ensisijaisesti
+            users.pop(users.indexOf(username));
+            saettiSays(username + ' has left');
             io.sockets.emit('update user list', users);
         });
     });
