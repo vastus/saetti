@@ -42,6 +42,22 @@ function validateAndSendMsg(socket,msg){
     });
 }
 
+function validateAndSetUsername(socket,username){
+    if(users.indexOf(username)!=-1){
+        sendError(socket,'Username already in use');
+    }else if(username == undefined || username.length<1){
+        sendError(socket,'Too short username');
+    }else if(username.length > 15){
+        sendError(socket, 'Too long username');
+    }else{
+        io.sockets.emit('new connection', {'username': username});
+        socket.set('username', username);
+        socket.set('users', users.push(username));  // miks?
+        socket.emit('usernameOK',true);
+        io.sockets.emit('update user list', users);
+    }
+}
+
 function sendError(socket,error){
     saettiSays(error,socket);
 }
@@ -69,10 +85,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('username', function (data) {
-        io.sockets.emit('new connection', {'username': data.username});
-		socket.set('username', data.username);
-        socket.set('users', users.push(data.username));
-        io.sockets.emit('update user list', users);
+        validateAndSetUsername(socket,data.username);
 	});	
     
     socket.on('disconnect', function () {
