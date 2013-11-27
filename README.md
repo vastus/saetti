@@ -1,14 +1,15 @@
-# Chatti appi Node.js:llä
+# Chat app w/ Node.js
 
-For the shits and giggles
+For shits and giggles.
 
-##todo
+## todos
 
-###pienet:
+### pienemmät
 - serverin lähettämille viesteille hilightiväri
-- usernamelle samankaltanen validateAndSendi kun messageillemissä tsekataan pituus ja uniikkius
+- usernamelle samankaltanen validateAndSendi kun messageille, missä tsekataan pituus ja uniikkius
 - spamminesto
 - /nick nimenvaihto
+- timestampin lähettäminen serveriltä (ms since unix epoch) ja renderöiminen clientilla haluttuun muotoon
 
-###isommat
+### isommat
 - kannut pls
