@@ -52,7 +52,6 @@ function validateAndSetUsername(socket,username){
     }else{
         io.sockets.emit('new connection', {'username': username});
         socket.set('username', username);
-       // socket.set('users', users.push(username));  // miks?
         socket.emit('usernameOK',true);
         io.sockets.emit('update user list', users);
     }
