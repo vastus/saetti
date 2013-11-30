@@ -28,8 +28,10 @@ if ('development' == app.get('env')) {
 }
 
 var users = [];
+var channels = [];
+
 function validateAndSendMsg(socket,msg){
-    socket.get('username', function(err,username){
+socket.get('username', function(err,username){
         if(err){
             sendError(socket,'You must set username first');
         }else if(msg.text.length<1){
@@ -37,7 +39,12 @@ function validateAndSendMsg(socket,msg){
         }else if(msg.text.length>500){
             sendError(socket,'Too long message'); 
         }else{
-            socket.emit('message',{username:username, text: msg.text, timestamp: getTimestamp()}); 
+            var chan = msg.channel;
+            console.log(chan);
+            channels[msg.channel].forEach(
+                function(socket){
+                    socket.emit("message",{text : msg.text, timestamp : getTimestamp(), username: username });
+            });
         }
     });
 }
@@ -50,13 +57,21 @@ function validateAndSetUsername(socket,username){
     }else if(username.length > 15){
         sendError(socket, 'Too long username');
     }else{
+        users.push(username);
+        addUserToChannel(socket,"main");
         io.sockets.emit('new connection', {'username': username});
         socket.set('username', username);
         socket.emit('usernameOK',true);
         io.sockets.emit('update user list', users);
     }
 }
-
+function addUserToChannel(socket,channel){
+    if(channels.channel == undefined){
+        channels[channel] = [];
+    }
+    channels[channel].push(socket);
+    console.log(channels);
+}
 function sendError(socket,error){
     saettiSays(error,socket);
 }
@@ -80,6 +95,8 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('message', function (msg){
         console.log(msg);
+        msg.channel = "main"; // kunnes fiksumpi tapa, nyt kaikki viestit aina mainilla
+        addUserToChannel(socket,"main"); // lisätään aina alussa main kannulle
         validateAndSendMsg(socket,msg);
 	});
 
