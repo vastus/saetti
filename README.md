@@ -9,6 +9,3 @@ For shits and giggles.
 - spamminesto
 - /nick nimenvaihto
 - timestampin lähettäminen serveriltä (ms since unix epoch) ja renderöiminen clientilla haluttuun muotoon
-
-### isommat
-- kannut pls: hashmappi missä avaimena kanavan nimi, arvona lista missä kanavalla olevat tyypit, msg vaan kannulla olevilel ja mukaan merkintä siitä mulle kannulle viesti on 

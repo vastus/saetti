@@ -27,11 +27,18 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-var users = [];
-var channels = [];
+var users = []; // Avaimena serverillä olevat usernamet, arvona kanavat joilla käyttäjä on
+var channels = []; // Avaimena serverin kanavat, arvona kanava oliot, joilta löytyy lista socketeista ja usernameista
 
-function validateAndSendMsg(socket,msg){
-socket.get('username', function(err,username){
+function Channel(){}
+Channel.prototype.usernames = [];
+Channel.prototype.sockets = [];
+
+function sendMsg(socket,msg){
+    if(msg.channel == undefined){  // mikäli viestiä ei ole kohdistettu tietylle kanavalle, se menee aina mainiin
+        msg.channel = "main";
+    }
+    socket.get('username', function(err,username){
         if(err){
             sendError(socket,'You must set username first');
         }else if(msg.text.length<1){
@@ -41,47 +48,88 @@ socket.get('username', function(err,username){
         }else{
             var chan = msg.channel;
             console.log(chan);
-            channels[msg.channel].forEach(
+            channels[msg.channel].sockets.forEach(
                 function(socket){
-                    socket.emit("message",{text : msg.text, timestamp : getTimestamp(), username: username });
+                    socket.emit("message",{text : msg.text, timestamp : getTimestamp(), username: username, channel: msg.channel });
             });
         }
     });
 }
 
-function validateAndSetUsername(socket,username){
-    if(users.indexOf(username)!=-1){
+function setUsername(socket,username){
+    if(username in users){
         sendError(socket,'Username already in use');
     }else if(username == undefined || username.length<1){
         sendError(socket,'Too short username');
     }else if(username.length > 15){
         sendError(socket, 'Too long username');
-    }else{
-        users.push(username);
-        addUserToChannel(socket,"main");
-        io.sockets.emit('new connection', {'username': username});
+    }else{        
+        addUserToChannel(socket,'main',username);
         socket.set('username', username);
         socket.emit('usernameOK',true);
-        io.sockets.emit('update user list', users);
     }
 }
-function addUserToChannel(socket,channel){
-    if(channels.channel == undefined){
-        channels[channel] = [];
+
+// funktio ylläpitää tietoja molemmin päin, sekä channelilla olevat socketit, että userilla olevat kanavat
+function addUserToChannel(socket,channel,username){
+    if(!channels[channel]){
+        channels[channel] = new Channel();
     }
-    channels[channel].push(socket);
-    console.log(channels);
+
+    channels[channel].usernames.push(username);
+    channels[channel].sockets.push(socket);
+
+    if(!users[username]){
+        users[username] = [];
+    }
+
+    users[username].push(channel);
+    channels[channel].sockets.forEach(
+        function(socket){
+            socket.emit('update user list', channels[channel].usernames);
+       });
 }
+
+function disconnectUser(socket){
+    console.log("rip socketti discos");
+    socket.get('username',function(err,username){
+        console.log(username);
+        if(username == null){
+            return;
+        }
+        console.log('sit mentii');
+        users[username].forEach(
+            function deleteFromChannelAndSendDisconnectMessage(channel){
+                console.log('voi pojat');
+                channels[channel].sockets.pop(socket);
+                channels[channel].usernames.pop(username);
+                channels[channel].sockets.forEach(
+                    function(socket){
+                        saettiSays(username+" left from channel", socket, channel);
+
+                        socket.emit('update user list', channels[channel].usernames);
+                    });
+            }
+        );
+        delete users[username];
+
+    });
+
+}
+
 function sendError(socket,error){
     saettiSays(error,socket);
 }
 
-function saettiSays(text,socket) {
+function saettiSays(text,socket,channel) {
     var obi = {
         username: 'Saetti',
         text: text,
-        timestamp: getTimestamp()
+        timestamp: getTimestamp(),
     };
+    if(channel == null){
+        obi.channel = 'main';
+    }
     if(socket==null){
         io.sockets.emit('message', obi);
     }else{
@@ -90,29 +138,40 @@ function saettiSays(text,socket) {
     }
 }
 
+
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', {username: 'Saetti',text: 'Welcome to Saetti', timestamp: getTimestamp()});
+	saettiSays('Welcome to Saetti',socket);
 
 	socket.on('message', function (msg){
-        console.log(msg);
-        msg.channel = "main"; // kunnes fiksumpi tapa, nyt kaikki viestit aina mainilla
-        addUserToChannel(socket,"main"); // lisätään aina alussa main kannulle
-        validateAndSendMsg(socket,msg);
+       console.log(msg);
+       sendMsg(socket,msg);
 	});
 
-	socket.on('username', function (data) {
-        validateAndSetUsername(socket,data.username);
+	socket.on('username', function (data) {  
+       setUsername(socket,data.username);
 	});	
     
     socket.on('disconnect', function () {
-        socket.get('username', function (err, username) {
-            if (err) console.log(err); // logataan ensisijaisesti
-            users.pop(users.indexOf(username));
-            saettiSays(username + ' has left');
-            io.sockets.emit('update user list', users);
+        disconnectUser(socket);
+    });
+
+    socket.on('join channel', function(channel){
+        socket.get('username',function(err,username){
+            if(!err && username != null){
+                addUserToChannel(socket,channel,username);
+
+             }
+        });
+    });
+    socket.on('leave channel', function(channel){
+        socket.get('username', function(err,username){
+            if(!err&&username !=null){
+                // todo
+            }
         });
     });
 });
+
 
 app.get('/', routes.index);
 app.get('/users', user.list);
