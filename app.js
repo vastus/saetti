@@ -165,7 +165,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('leave channel', function(channel){
         socket.get('username', function(err,username){
             if(!err&&username !=null){
-                // todo
+                leaveChannel(socket,channel,username);
             }
         });
     });
