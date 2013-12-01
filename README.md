@@ -9,3 +9,4 @@ For shits and giggles.
 - spamminesto
 - /nick nimenvaihto
 - timestampin lähettäminen serveriltä (ms since unix epoch) ja renderöiminen clientilla haluttuun muotoon
+- kanavalta poistuminen, huom pitää kattoa että päivitykset tehdään sekä channeliin että server userlistiin
