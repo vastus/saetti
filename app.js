@@ -91,16 +91,13 @@ function addUserToChannel(socket,channel,username){
 }
 
 function disconnectUser(socket){
-    console.log("rip socketti discos");
     socket.get('username',function(err,username){
         console.log(username);
         if(username == null){
             return;
         }
-        console.log('sit mentii');
         users[username].forEach(
             function deleteFromChannelAndSendDisconnectMessage(channel){
-                console.log('voi pojat');
                 channels[channel].sockets.pop(socket);
                 channels[channel].usernames.pop(username);
                 channels[channel].sockets.forEach(
@@ -112,9 +109,7 @@ function disconnectUser(socket){
             }
         );
         delete users[username];
-
     });
-
 }
 
 function sendError(socket,error){
