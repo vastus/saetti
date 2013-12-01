@@ -30,9 +30,11 @@ if ('development' == app.get('env')) {
 var users = []; // Avaimena serverillä olevat usernamet, arvona kanavat joilla käyttäjä on
 var channels = []; // Avaimena serverin kanavat, arvona kanava oliot, joilta löytyy lista socketeista ja usernameista
 
-function Channel(){}
-Channel.prototype.usernames = [];
-Channel.prototype.sockets = [];
+function Channel(){
+    this.sockets = [];
+    this.usernames = [];
+}
+
 
 function sendMsg(socket,msg){
     if(msg.channel == undefined){  // mikäli viestiä ei ole kohdistettu tietylle kanavalle, se menee aina mainiin
@@ -41,7 +43,7 @@ function sendMsg(socket,msg){
     socket.get('username', function(err,username){
         if(err){
             sendError(socket,'You must set username first');
-        }else if(msg.text.length<1){
+        }else if(msg.text == undefined || msg.text.length<1){
             sendError(socket,'You can\'t send empty message');
         }else if(msg.text.length>500){
             sendError(socket,'Too long message'); 
@@ -97,21 +99,23 @@ function disconnectUser(socket){
             return;
         }
         users[username].forEach(
-            function deleteFromChannelAndSendDisconnectMessage(channel){
-                channels[channel].sockets.pop(socket);
-                channels[channel].usernames.pop(username);
-                channels[channel].sockets.forEach(
-                    function(socket){
-                        saettiSays(username+" left from channel", socket, channel);
-
-                        socket.emit('update user list', channels[channel].usernames);
-                    });
+            function(channel){
+              leaveChannel(socket,channel,username);                 
             }
         );
         delete users[username];
     });
 }
-
+function leaveChannel(socket,channel,username){
+    channels[channel].sockets.pop(socket);
+    channels[channel].usernames.pop(username);
+    channels[channel].sockets.forEach(
+    function(socket){
+        saettiSays(username+" left from channel", socket, channel);
+        socket.emit('update user list', channels[channel].usernames);
+    });
+    users[username].pop(channel);
+};
 function sendError(socket,error){
     saettiSays(error,socket);
 }

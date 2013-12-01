@@ -9,4 +9,10 @@ For shits and giggles.
 - spamminesto
 - /nick nimenvaihto
 - timestampin lähettäminen serveriltä (ms since unix epoch) ja renderöiminen clientilla haluttuun muotoon
-- kanavalta poistuminen, huom pitää kattoa että päivitykset tehdään sekä channeliin että server userlistiin
+- Socket voi lähettää viestin kanavalle vain jos on itse kanavalla
+- Jos socket on jo kanavalla niin ei tuplajoinaa sinne
+- Jos yritetään lähettää viesti kanavalle jota ei ole olemassa niin ohjelman ei tulisi kaatua
+
+
+
+### isommat
